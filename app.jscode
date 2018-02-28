@@ -73,7 +73,7 @@ function setValidations() {
 		deletesCandyAnimation();
 	}
 }
-//permitir el movimiento de los dulces
+////La interacción del usuario con el elemento dulce debe ser de drag & drop.
 function addCandyEvents() {
 	$('img').draggable({
 		containment: '.panel-tablero',
