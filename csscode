@@ -104,3 +104,10 @@ div[class^='col']{
   height: 96px;
 
 }
+.sub-titulo{
+  font-family: gameFont;
+  font-size: 3em;
+  color: #DCFF0E;
+  width: 100%;
+  text-align: center;
+}
