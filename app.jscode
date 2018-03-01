@@ -35,7 +35,9 @@ function colorBlink(selector) {
 			queue: true
 		});
 }
-// funcipn para generar números aleatorios y llenar el tablero con los diferentes dulces
+
+
+// funcion para generar números aleatorios y llenar el tablero con los diferentes dulces
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
@@ -46,7 +48,8 @@ function checkBoard() {
 	fillBoard();
 }
 
-// Se deben generar los dulces aleatoriamente en el tablero
+
+// Se deben generar los dulces aleatoriamente en el tablero, llenándolo todo al principio del juego
 function fillBoard() {
 	var top = 7;
 	var column = $('[class^="col-"]');
@@ -65,6 +68,7 @@ function fillBoard() {
 	addCandyEvents();
 	setValidations();
 }
+//Cada vez que se realice una combinación de 3 dulces o más dulces en línea, y posteriormente desaparezcan,
 function setValidations() {
 	columnValidation();
 	rowValidation();
@@ -73,7 +77,7 @@ function setValidations() {
 		deletesCandyAnimation();
 	}
 }
-////La interacción del usuario con el elemento dulce debe ser de drag & drop.
+//La interacción del usuario con el elemento dulce debe ser de drag & drop.
 function addCandyEvents() {
 	$('img').draggable({
 		containment: '.panel-tablero',
@@ -88,4 +92,118 @@ function addCandyEvents() {
 		drop: swapCandy
 	});
 	enableCandyEvents();
+}
+
+
+// Verificar si hay como mínimo tres dulces del mismo tipo en línea, en caso tal, deben desaparecer con un efecto animado.
+//Cada vez que el jugador realice un movimiento, debe aumentarse un contador que se muestra en pantalla.
+//para las columnas
+function columnValidation() {
+	for (var j = 0; j < 7; j++) { 
+		var counter = 0;
+		var candyPosition = [];
+		var extraCandyPosition = [];
+		var candyColumn = candyColumns(j);
+		var comparisonValue = candyColumn.eq(0);
+		var gap = false;
+		for (var i = 1; i < candyColumn.length; i++) {
+			var srcComparison = comparisonValue.attr('src');
+			var srcCandy = candyColumn.eq(i).attr('src');
+
+			if (srcComparison != srcCandy) {
+				if (candyPosition.length >= 3) {
+					gap = true;
+				} else {
+					candyPosition = [];
+				}
+				counter = 0;
+			} else {
+				if (counter == 0) {
+					if (!gap) {
+						candyPosition.push(i - 1);
+					} else {
+						extraCandyPosition.push(i - 1);
+					}
+				}
+				if (!gap) {
+					candyPosition.push(i);
+				} else {
+					extraCandyPosition.push(i);
+				}
+				counter += 1;
+			}
+			comparisonValue = candyColumn.eq(i);
+		}
+		if (extraCandyPosition.length > 2) {
+			candyPosition = $.merge(candyPosition, extraCandyPosition);
+		}
+		if (candyPosition.length <= 2) {
+			candyPosition = [];
+		}
+		candyCount = candyPosition.length;
+		if (candyCount >= 3) {
+			deleteColumnCandy(candyPosition, candyColumn);
+			setScore(candyCount);
+		}
+	}
+}
+function deleteColumnCandy(candyPosition, candyColumn) {
+	for (var i = 0; i < candyPosition.length; i++) {
+		candyColumn.eq(candyPosition[i]).addClass('delete');
+	}
+}
+// Para las filas
+function rowValidation() {
+	for (var j = 0; j < 6; j++) {
+		var counter = 0;
+		var candyPosition = [];
+		var extraCandyPosition = [];
+		var candyRow = candyRows(j);
+		var comparisonValue = candyRow[0];
+		var gap = false;
+		for (var i = 1; i < candyRow.length; i++) {
+			var srcComparison = comparisonValue.attr('src');
+			var srcCandy = candyRow[i].attr('src');
+
+			if (srcComparison != srcCandy) {
+				if (candyPosition.length >= 3) {
+					gap = true;
+				} else {
+					candyPosition = [];
+				}
+				counter = 0;
+			} else {
+				if (counter == 0) {
+					if (!gap) {
+						candyPosition.push(i - 1);
+					} else {
+						extraCandyPosition.push(i - 1);
+					}
+				}
+				if (!gap) {
+					candyPosition.push(i);
+				} else {
+					extraCandyPosition.push(i);
+				}
+				counter += 1;
+			}
+			comparisonValue = candyRow[i];
+		}
+		if (extraCandyPosition.length > 2) {
+			candyPosition = $.merge(candyPosition, extraCandyPosition);
+		}
+		if (candyPosition.length <= 2) {
+			candyPosition = [];
+		}
+		candyCount = candyPosition.length;
+		if (candyCount >= 3) {
+			deleteHorizontal(candyPosition, candyRow);
+			setScore(candyCount);
+		}
+	}
+}
+function deleteHorizontal(candyPosition, candyRow) {
+	for (var i = 0; i < candyPosition.length; i++) {
+		candyRow[candyPosition[i]].addClass('delete');
+	}
 }
