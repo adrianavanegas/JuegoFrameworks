@@ -212,6 +212,7 @@ function giveCandyArrays(arrayType, index) {
 	var candyColumns = $([candyCol1, candyCol2, candyCol3, candyCol4,
 		candyCol5, candyCol6, candyCol7
 	]);
+
 	if (typeof index === 'number') {
 		var candyRow = $([candyCol1.eq(index), candyCol2.eq(index), candyCol3.eq(index),
 			candyCol4.eq(index), candyCol5.eq(index), candyCol6.eq(index),
@@ -276,7 +277,6 @@ function swapCandy(event, candyDrag) {
 	var dropSrc = candyDrop.attr('src');
 	candyDrag.attr('src', dropSrc);
 	candyDrop.attr('src', dragSrc);
-
 	setTimeout(function () {
 		checkBoard();
 		if ($('img.delete').length === 0) {
@@ -337,19 +337,16 @@ function disableCandyEvents() {
 	$('img').draggable('disable');
 	$('img').droppable('disable');
 }
-
 function enableCandyEvents() {
 	$('img').draggable('enable');
 	$('img').droppable('enable');
 }
-
 //El botón de Iniciar en la parte inferior izquierda, debe cambiar su contenido a Reiniciar una vez se oprima por primera vez. 
 //Al presionar reiniciar se debe volver a cargar la página para empezar un nuevo juego.
 //Fin del juego
 function endGame() {
-	
-	$('div.panel-tablero, div.time').toggle("scale",500); //( "fold", 1000);
-	$('.panel-score').animate({width: "390%", fontSize: "1.5em" }, 1000);//.width('100%', 1500);
+	$('div.panel-tablero, div.time').toggle("scale",500); 
+	$('.panel-score').animate({width: "390%", fontSize: "1.5em" }, 1000);
 	$( "h2.sub-titulo" ).show();
 }
 // inicio del juego
@@ -367,7 +364,6 @@ function initGame() {
       		callback: function() {
         		endGame();
     		}
-			//onComplete: terminarJuego//endGame
 		})
 	});
 }
